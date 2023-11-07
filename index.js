@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const app = express();
 require('dotenv').config()
 const port = process.env.PORT || 5000;
@@ -35,7 +35,24 @@ async function run() {
     const jobCollection = client.db('FlowLancher').collection('jobs')
     const usersCollection = client.db('FlowLancher').collection('user')
 
+    // find all jobs from mongodb
+    app.get('/jobs', async(req, res) => {
+        const cursor = jobCollection.find();
+        const result = await cursor.toArray(); 
+        res.send(result); 
+    })
 
+    // find a specific job for click on bid now button 
+
+    app.get('/jobs/:id', async(req, res) => {
+      const id = req.params.id; 
+      const query = {_id: new ObjectId(id)}
+      const result = await jobCollection.findOne(query)
+      res.send(result)
+    } )
+
+
+// post jobs to database
     app.post('/jobs', async(req, res) => {
         const newJobs = req.body; 
         console.log(newJobs)
