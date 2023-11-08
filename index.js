@@ -73,12 +73,21 @@ async function run() {
     // getting some data to show in the my my posted jobs
 
     app.get('/jobs', async(req, res) => {
-      console.log(req.query)
+      console.log(req.query.email)
       let query = {}
       if(req.query?.email){
         query = {email: req.query.email}
       }
       const result = await jobCollection.find(query).toArray()
+      res.send(result)
+    })
+
+    // api for deleting an specific job from an specific user
+
+    app.delete('/jobs/:id', async(req, res) => {
+      const id = req.params.id; 
+      const query = {_id: new ObjectId(id)}
+      const result = await jobCollection.deleteOne(query); 
       res.send(result)
     })
 
