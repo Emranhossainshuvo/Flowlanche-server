@@ -44,6 +44,14 @@ async function run() {
 
     // find a specific job for click on bid now button 
 
+    app.get('/jobs', async(req, res) => {
+      console.log(req.query)
+      const result = await jobCollection.find().toArray()
+      res.send(result)
+    })
+
+    
+
     app.get('/jobs/:id', async(req, res) => {
       const id = req.params.id; 
       const query = {_id: new ObjectId(id)}
@@ -51,6 +59,7 @@ async function run() {
       res.send(result)
     } )
 
+    
 
 // post jobs to database
     app.post('/jobs', async(req, res) => {
@@ -58,6 +67,19 @@ async function run() {
         console.log(newJobs)
         const result = await jobCollection.insertOne(newJobs); 
         res.send(result)
+    })
+
+
+    // getting some data to show in the my my posted jobs
+
+    app.get('/jobs', async(req, res) => {
+      console.log(req.query)
+      let query = {}
+      if(req.query?.email){
+        query = {email: req.query.email}
+      }
+      const result = await jobCollection.find(query).toArray()
+      res.send(result)
     })
 
     // Send a ping to confirm a successful connection
