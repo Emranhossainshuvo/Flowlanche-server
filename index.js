@@ -49,6 +49,17 @@ async function run() {
       res.send(result)
     })
 
+    // getting user specific bid from mongodb
+
+    app.get('/bids', async(req, res) => {
+      console.log(req.query)
+      let query = {}; 
+      if(req.query?.email){
+        query = {email: req.query.email}
+      }
+      const result = await bidsCollection.find(query).toArray(); 
+      res.send(result)
+    })
 
     // find all jobs from mongodb
     app.get("/jobs", async (req, res) => {
