@@ -28,11 +28,27 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
+    
     await client.connect();
 
+    
+    
+    
+    
     // database  and collection name
     const jobCollection = client.db("FlowLancher").collection("jobs");
     const usersCollection = client.db("FlowLancher").collection("user");
+    const bidsCollection = client.db("FlowLancher").collection("Bids");
+    
+    // api for storing bids
+
+    app.post('/bids', async(req, res) => {
+      const newBid = req.body; 
+      console.log(newBid)
+      const result = await bidsCollection.insertOne(newBid)
+      res.send(result)
+    })
+
 
     // find all jobs from mongodb
     app.get("/jobs", async (req, res) => {
