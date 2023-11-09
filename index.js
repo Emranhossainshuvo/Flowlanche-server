@@ -6,7 +6,10 @@ require("dotenv").config();
 const port = process.env.PORT || 5000;
 
 // middleqwares
-app.use(cors());
+// 'https://flowlancher.web.app', 
+// 'https://flowlancher.firebaseapp.com', 
+// 'http://localhost:5000'
+app.use(cors())
 app.use(express.json());
 
 // console.log(process.env.DB_PASS)
@@ -29,7 +32,7 @@ async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
     
-    await client.connect();
+    // await client.connect();
 
     
     
@@ -71,7 +74,7 @@ async function run() {
     // find a specific job for click on bid now button
 
     app.get("/jobs", async (req, res) => {
-      console.log(req.query);
+      // console.log(req.query);
       const result = await jobCollection.find().toArray();
       res.send(result);
     });
@@ -86,7 +89,7 @@ async function run() {
     // post jobs to database
     app.post("/jobs", async (req, res) => {
       const newJobs = req.body;
-      console.log(newJobs);
+      // console.log(newJobs);
       const result = await jobCollection.insertOne(newJobs);
       res.send(result);
     });
@@ -94,7 +97,7 @@ async function run() {
     // getting some data to show in the my my posted jobs
 
     app.get("/jobs", async (req, res) => {
-      console.log(req.query.email);
+      // console.log(req.query.email);
       let query = {};
       if (req.query?.email) {
         query = { email: req.query.email };
